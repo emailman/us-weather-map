@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(tree:*)",
+      "Bash(dir:*)",
+      "Bash(findstr:*)",
+      "Bash(.gradlew.bat :composeApp:compileKotlinJvm:*)",
+      "WebSearch",
+      "Bash(netstat:*)",
+      "WebFetch(domain:www.naturalearthdata.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:cdn.jsdelivr.net)",
+      "WebFetch(domain:simplemaps.com)"
+    ]
+  }
+}
