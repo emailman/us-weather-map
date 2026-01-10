@@ -48,7 +48,7 @@ fun WeatherMapScreen(viewModel: WeatherMapViewModel) {
                     capitals = state.capitals,
                     modifier = Modifier.fillMaxSize()
                 )
-                WeatherLegend(modifier = Modifier.align(Alignment.BottomStart))
+                WeatherLegend(modifier = Modifier.align(Alignment.BottomEnd))
                 FilledTonalButton(
                     onClick = { viewModel.refresh() },
                     modifier = Modifier
