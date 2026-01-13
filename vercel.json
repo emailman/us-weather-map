@@ -1,7 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "bash vercel-build.sh",
-  "outputDirectory": "composeApp/build/dist/wasmJs/productionExecutable",
-  "installCommand": "echo 'No npm install needed'",
+  "outputDirectory": "public",
+  "buildCommand": "",
+  "installCommand": "",
   "framework": null
 }
