@@ -13,7 +13,7 @@ if [ -z "$OPENWEATHER_API_KEY" ]; then
 fi
 
 echo "Step 1: Building WasmJS production bundle..."
-./gradlew :composeApp:wasmJsBrowserDistribution --no-daemon
+bash gradlew :composeApp:wasmJsBrowserDistribution --no-daemon
 
 echo "Step 2: Injecting API key into index.html..."
 OUTPUT_DIR="composeApp/build/dist/wasmJs/productionExecutable"
