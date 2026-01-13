@@ -47,8 +47,23 @@ NOT `kotlinx.datetime.Clock` or `kotlinx.datetime.Instant`.
 4. Added hover tooltips showing city name, state, and weather details
 5. Implemented smaller markers for crowded Northeast region
 6. **Jan 10, 2026**: Replaced state boundaries with geographically accurate Albers USA projection paths
+7. **Jan 11, 2026**: Fixed state capital marker positions to align with Albers USA projection
+8. **Jan 12, 2026**: Recalculated all marker positions using proper Albers USA projection formula
 
 ## Completed Work
+
+### State Capital Marker Alignment (Jan 12, 2026)
+- **Status**: Complete
+- **What was done**: Recalculated all 50 state capital marker positions using the Albers USA projection formula
+- **Method**: Created Python script (`tools/calculate-coordinates.py`) implementing the same projection as D3.js `geoAlbersUsa()`
+- **Projection parameters**: Scale=1070, Translate=[480, 300] for 960×600 viewport
+- **Key changes**:
+  - All continental US capitals now use mathematically correct projected coordinates
+  - Alaska and Hawaii insets positioned based on SVG analysis
+  - Coordinates normalized to 0.0-1.0 range
+- **Files**:
+  - `StateCapital.kt`: Updated all mapX/mapY values
+  - `tools/calculate-coordinates.py`: Projection calculation utility
 
 ### State Border Accuracy (Jan 10, 2026)
 - **Status**: Complete
@@ -60,7 +75,6 @@ NOT `kotlinx.datetime.Clock` or `kotlinx.datetime.Instant`.
   - Alaska and Hawaii as proper insets in lower-left
   - Multi-polygon support (Michigan peninsulas, California islands, etc.)
   - Optimized paths for web rendering
-- **Note**: State capital marker coordinates in `StateCapital.kt` may need minor adjustments to align with the new projection
 
 ### Environment Setup
 - **Required**: `OPENWEATHER_API_KEY` environment variable for JVM Desktop version

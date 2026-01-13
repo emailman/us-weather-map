@@ -27,7 +27,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
@@ -37,7 +36,7 @@ import edu.emailman.weathermap.ui.theme.temperatureToColor
 @Composable
 fun BoxScope.CapitalMarker(
     capitalWeather: CapitalWeather,
-    mapSize: IntSize,
+    mapBounds: MapBounds,
     modifier: Modifier = Modifier
 ) {
     val capital = capitalWeather.capital
@@ -47,10 +46,12 @@ fun BoxScope.CapitalMarker(
     val interactionSource = remember { MutableInteractionSource() }
     val isHovered by interactionSource.collectIsHoveredAsState()
 
-    val xPx = (capital.mapX * mapSize.width).toInt()
-    val yPx = (capital.mapY * mapSize.height).toInt()
+    // Calculate pixel position accounting for map bounds and offset
+    // mapX/mapY are normalized coordinates (0.0-1.0) relative to the map's intrinsic size
+    val xPx = (mapBounds.offsetX + capital.mapX * mapBounds.width).toInt()
+    val yPx = (mapBounds.offsetY + capital.mapY * mapBounds.height).toInt()
 
-    // Use smaller markers for crowded Northeast region
+    // Use smaller markers for the crowded Northeast region
     val markerSize = if (capital.isNortheast) 22.dp else 28.dp
     val fontSize = if (capital.isNortheast) 8.sp else 10.sp
     val halfMarker = markerSize / 2

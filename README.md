@@ -32,25 +32,28 @@ The map data is stored as an Android Vector Drawable in `composeApp/src/commonMa
 ## Project Structure
 
 ```
-composeApp/
-├── src/
-│   ├── commonMain/          # Shared code across platforms
-│   │   ├── kotlin/
-│   │   │   ├── ui/          # Compose UI components
-│   │   │   │   ├── WeatherMapScreen.kt
-│   │   │   │   ├── components/
-│   │   │   │   │   ├── USMapView.kt
-│   │   │   │   │   └── CapitalMarker.kt
-│   │   │   │   └── theme/
-│   │   │   │       └── WeatherColors.kt
-│   │   │   └── domain/
-│   │   │       └── model/
-│   │   │           └── StateCapital.kt
-│   │   └── composeResources/
-│   │       └── drawable/
-│   │           └── us_map.xml    # Vector map with state boundaries
-│   ├── jvmMain/              # Desktop-specific code
-│   └── wasmJsMain/           # Web-specific code
+├── composeApp/
+│   └── src/
+│       ├── commonMain/          # Shared code across platforms
+│       │   ├── kotlin/
+│       │   │   ├── ui/          # Compose UI components
+│       │   │   │   ├── WeatherMapScreen.kt
+│       │   │   │   ├── components/
+│       │   │   │   │   ├── USMapView.kt
+│       │   │   │   │   └── CapitalMarker.kt
+│       │   │   │   └── theme/
+│       │   │   │       └── WeatherColors.kt
+│       │   │   └── domain/
+│       │   │       └── model/
+│       │   │           └── StateCapital.kt
+│       │   └── composeResources/
+│       │       └── drawable/
+│       │           └── us_map.xml    # Vector map with state boundaries
+│       ├── jvmMain/              # Desktop-specific code
+│       └── wasmJsMain/           # Web-specific code
+└── tools/
+    ├── build-picker.py           # Generates coordinate picker from map XML
+    └── capital-picker.html       # Interactive tool for positioning capitals
 ```
 
 ## Build and Run
@@ -92,8 +95,24 @@ Then open http://localhost:8080 in a modern browser.
 ## Configuration
 
 State capitals are defined in `StateCapital.kt` with:
-- Normalized map coordinates (0.0-1.0 for `mapX` and `mapY`)
+- Normalized map coordinates (0.0-1.0 for `mapX` and `mapY`), manually positioned using the coordinate picker tool
 - `isNortheast` flag for smaller markers (22dp vs 28dp) in crowded areas
+
+### Coordinate Picker Tool
+
+If you need to adjust capital marker positions, use the included coordinate picker tool:
+
+1. Open `tools/capital-picker.html` in a browser
+2. Select a state from the list on the right
+3. Click on the map where the capital should be positioned
+4. The state turns green when its coordinate is set
+5. Click "Copy All Coordinates" and paste into `StateCapital.kt`
+
+To regenerate the picker tool (if the map SVG changes):
+```shell
+cd tools
+python build-picker.py
+```
 
 ## Credits
 

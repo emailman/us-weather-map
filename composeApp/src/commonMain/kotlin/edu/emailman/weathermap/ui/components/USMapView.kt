@@ -17,14 +17,54 @@ import org.jetbrains.compose.resources.painterResource
 import weathermap.composeapp.generated.resources.Res
 import weathermap.composeapp.generated.resources.us_map
 
+// Map intrinsic dimensions from the SVG viewBox
+private const val MAP_INTRINSIC_WIDTH = 960f
+private const val MAP_INTRINSIC_HEIGHT = 600f
+private const val MAP_ASPECT_RATIO = MAP_INTRINSIC_WIDTH / MAP_INTRINSIC_HEIGHT // 1.6
+
+/**
+ * Represents the actual rendered bounds of the map image within its container.
+ * When ContentScale.Fit is used, the map maintains its aspect ratio and is centered,
+ * which may leave padding (letterboxing) if the container has a different aspect ratio.
+ */
+data class MapBounds(
+    val offsetX: Float,   // Left padding (0 if map fills width)
+    val offsetY: Float,   // Top padding (0 if map fills height)
+    val width: Float,     // Actual rendered width of the map
+    val height: Float     // Actual rendered height of the map
+)
+
+/**
+ * Calculates the actual map bounds within the container after ContentScale.Fit is applied.
+ */
+private fun calculateMapBounds(containerSize: IntSize): MapBounds {
+    val containerWidth = containerSize.width.toFloat()
+    val containerHeight = containerSize.height.toFloat()
+    val containerAspectRatio = containerWidth / containerHeight
+
+    return if (containerAspectRatio > MAP_ASPECT_RATIO) {
+        // Container is wider than map - fit by height, horizontal padding
+        val mapHeight = containerHeight
+        val mapWidth = mapHeight * MAP_ASPECT_RATIO
+        val offsetX = (containerWidth - mapWidth) / 2f
+        MapBounds(offsetX, 0f, mapWidth, mapHeight)
+    } else {
+        // Container is taller than map - fit by width, vertical padding
+        val mapWidth = containerWidth
+        val mapHeight = mapWidth / MAP_ASPECT_RATIO
+        val offsetY = (containerHeight - mapHeight) / 2f
+        MapBounds(0f, offsetY, mapWidth, mapHeight)
+    }
+}
+
 @Composable
 fun USMapView(
     capitals: List<CapitalWeather>,
     modifier: Modifier = Modifier
 ) {
-    var mapSize by remember { mutableStateOf(IntSize.Zero) }
+    var containerSize by remember { mutableStateOf(IntSize.Zero) }
 
-    Box(modifier = modifier.onSizeChanged { mapSize = it }) {
+    Box(modifier = modifier.onSizeChanged { containerSize = it }) {
         Image(
             painter = painterResource(Res.drawable.us_map),
             contentDescription = "US Map",
@@ -32,11 +72,13 @@ fun USMapView(
             contentScale = ContentScale.Fit
         )
 
-        if (mapSize != IntSize.Zero) {
+        if (containerSize != IntSize.Zero) {
+            val mapBounds = calculateMapBounds(containerSize)
+
             capitals.forEach { capitalWeather ->
                 CapitalMarker(
                     capitalWeather = capitalWeather,
-                    mapSize = mapSize
+                    mapBounds = mapBounds
                 )
             }
         }
