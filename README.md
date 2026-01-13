@@ -51,9 +51,11 @@ The map data is stored as an Android Vector Drawable in `composeApp/src/commonMa
 │       │           └── us_map.xml    # Vector map with state boundaries
 │       ├── jvmMain/              # Desktop-specific code
 │       └── wasmJsMain/           # Web-specific code
-└── tools/
-    ├── build-picker.py           # Generates coordinate picker from map XML
-    └── capital-picker.html       # Interactive tool for positioning capitals
+├── tools/
+│   ├── build-picker.py           # Generates coordinate picker from map XML
+│   └── capital-picker.html       # Interactive tool for positioning capitals
+├── vercel.json                   # Vercel deployment configuration
+└── vercel-build.sh               # Build script for Vercel
 ```
 
 ## Build and Run
@@ -91,6 +93,25 @@ Then open http://localhost:8080 in a modern browser.
 # Windows
 .\gradlew.bat :composeApp:jsBrowserDevelopmentRun
 ```
+
+### Deploy to Vercel
+
+This project is configured for deployment to Vercel.
+
+1. **Connect your repository to Vercel**
+   - Go to [vercel.com](https://vercel.com) and import your GitHub repository
+   - Vercel will automatically detect the `vercel.json` configuration
+
+2. **Set the API key environment variable**
+   - In Vercel project settings, go to Environment Variables
+   - Add `OPENWEATHER_API_KEY` with your OpenWeather API key
+   - Get a free API key at [openweathermap.org](https://openweathermap.org/api)
+
+3. **Deploy**
+   - Vercel will run `vercel-build.sh` which:
+     - Builds the WasmJS production bundle
+     - Injects your API key into the HTML
+   - Your app will be live at `your-project.vercel.app`
 
 ## Configuration
 
