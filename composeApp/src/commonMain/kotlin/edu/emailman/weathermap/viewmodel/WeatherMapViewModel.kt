@@ -11,7 +11,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlin.time.Clock
 import kotlin.time.Duration.Companion.hours
+import kotlin.time.Instant
 
 class WeatherMapViewModel(
     private val repository: WeatherRepository
@@ -21,6 +23,7 @@ class WeatherMapViewModel(
     val uiState: StateFlow<WeatherMapUiState> = _uiState.asStateFlow()
 
     private var refreshJob: Job? = null
+    private var lastRefreshTime: Instant? = null
 
     init {
         observeWeatherData()
@@ -36,7 +39,7 @@ class WeatherMapViewModel(
 
                 _uiState.value = when {
                     allLoading -> WeatherMapUiState.Loading
-                    hasAnyData -> WeatherMapUiState.Success(capitals)
+                    hasAnyData -> WeatherMapUiState.Success(capitals, lastRefreshTime)
                     else -> WeatherMapUiState.Error("Failed to load weather data")
                 }
             }
@@ -46,6 +49,7 @@ class WeatherMapViewModel(
     private fun loadInitialData() {
         viewModelScope.launch {
             repository.refreshWeather()
+            lastRefreshTime = Clock.System.now()
         }
     }
 
@@ -54,6 +58,7 @@ class WeatherMapViewModel(
             while (isActive) {
                 delay(1.hours)
                 repository.refreshWeather()
+                lastRefreshTime = Clock.System.now()
             }
         }
     }
@@ -61,6 +66,7 @@ class WeatherMapViewModel(
     fun refresh() {
         viewModelScope.launch {
             repository.refreshWeather()
+            lastRefreshTime = Clock.System.now()
         }
     }
 
