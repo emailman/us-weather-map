@@ -33,7 +33,10 @@ NOT `kotlinx.datetime.Clock` or `kotlinx.datetime.Instant`.
 
 ### Running the App
 ```bash
-# JS Browser (development)
+# WASM Browser (development) - runs at localhost:8083
+./gradlew wasmJsBrowserDevelopmentRun
+
+# JS Browser (development) - runs at localhost:8080
 ./gradlew jsBrowserDevelopmentRun
 
 # JVM Desktop
@@ -49,8 +52,23 @@ NOT `kotlinx.datetime.Clock` or `kotlinx.datetime.Instant`.
 6. **Jan 10, 2026**: Replaced state boundaries with geographically accurate Albers USA projection paths
 7. **Jan 11, 2026**: Fixed state capital marker positions to align with Albers USA projection
 8. **Jan 12, 2026**: Recalculated all marker positions using proper Albers USA projection formula
+9. **Jan 14, 2026**: Fixed Refresh button, timestamp display, and JVM window size
 
 ## Completed Work
+
+### Bug Fixes and UI Improvements (Jan 14, 2026)
+- **Status**: Complete
+- **What was done**:
+  1. **WASM API Key**: Added OpenWeatherMap API key to `webMain/resources/index.html` for local development (was showing "Failed to load weather data")
+  2. **Last Refresh Timestamp**: Fixed race condition in `WeatherMapViewModel.kt` where timestamp was set after API call, causing it to be null when state updated. Now sets `lastRefreshTime` before calling `refreshWeather()`
+  3. **Refresh Button**: Added `forceRefresh` parameter to `WeatherRepository.refreshWeather()`. When true, clears cache before fetching. Manual Refresh button now bypasses 1-hour cache
+  4. **JVM Window Size**: Widened from 1024dp to 1300dp for better map visibility
+- **Files modified**:
+  - `WeatherRepository.kt`: Added `forceRefresh: Boolean = false` parameter
+  - `WeatherRepositoryImpl.kt`: Clears cache when `forceRefresh = true`
+  - `WeatherMapViewModel.kt`: Fixed timestamp race condition, uses `forceRefresh = true` for manual refresh
+  - `main.kt` (jvmMain): Window width 1024dp → 1300dp
+  - `index.html` (webMain): Added API key for local WASM development
 
 ### State Capital Marker Alignment (Jan 12, 2026)
 - **Status**: Complete
