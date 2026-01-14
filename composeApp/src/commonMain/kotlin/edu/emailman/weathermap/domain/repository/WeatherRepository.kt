@@ -5,5 +5,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface WeatherRepository {
     fun getCapitalsWeather(): Flow<List<CapitalWeather>>
-    suspend fun refreshWeather()
+    suspend fun refreshWeather(forceRefresh: Boolean = false)
 }

@@ -9,7 +9,7 @@ fun main() = application {
     Window(
         onCloseRequest = ::exitApplication,
         title = "US Weather Map",
-        state = rememberWindowState(width = 1024.dp, height = 700.dp)
+        state = rememberWindowState(width = 1300.dp, height = 700.dp)
     ) {
         App()
     }

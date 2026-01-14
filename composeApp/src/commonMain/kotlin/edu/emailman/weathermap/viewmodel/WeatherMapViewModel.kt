@@ -48,8 +48,8 @@ class WeatherMapViewModel(
 
     private fun loadInitialData() {
         viewModelScope.launch {
-            repository.refreshWeather()
             lastRefreshTime = Clock.System.now()
+            repository.refreshWeather()
         }
     }
 
@@ -57,16 +57,16 @@ class WeatherMapViewModel(
         refreshJob = viewModelScope.launch {
             while (isActive) {
                 delay(1.hours)
-                repository.refreshWeather()
                 lastRefreshTime = Clock.System.now()
+                repository.refreshWeather()
             }
         }
     }
 
     fun refresh() {
         viewModelScope.launch {
-            repository.refreshWeather()
             lastRefreshTime = Clock.System.now()
+            repository.refreshWeather(forceRefresh = true)
         }
     }
 

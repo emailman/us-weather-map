@@ -24,7 +24,10 @@ class WeatherRepositoryImpl(
 
     override fun getCapitalsWeather(): Flow<List<CapitalWeather>> = _capitalsWeather.asStateFlow()
 
-    override suspend fun refreshWeather() {
+    override suspend fun refreshWeather(forceRefresh: Boolean) {
+        if (forceRefresh) {
+            cache.clear()
+        }
         StateCapitals.all.forEach { capital ->
             val result = fetchWeatherForCapital(capital)
             updateCapitalWeather(result)
