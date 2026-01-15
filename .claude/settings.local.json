@@ -10,7 +10,11 @@
       "WebFetch(domain:www.naturalearthdata.com)",
       "WebFetch(domain:raw.githubusercontent.com)",
       "WebFetch(domain:cdn.jsdelivr.net)",
-      "WebFetch(domain:simplemaps.com)"
+      "WebFetch(domain:simplemaps.com)",
+      "Bash(where:*)",
+      "Bash(python build-picker.py:*)",
+      "Bash(ls:*)",
+      "Bash(wc:*)"
     ]
   }
 }
