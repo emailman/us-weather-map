@@ -2,6 +2,7 @@ package edu.emailman.weathermap.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.hoverable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
@@ -18,7 +19,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -45,6 +48,7 @@ fun BoxScope.CapitalMarker(
 
     val interactionSource = remember { MutableInteractionSource() }
     val isHovered by interactionSource.collectIsHoveredAsState()
+    var isSelected by remember { mutableStateOf(false) }
 
     // Calculate pixel position accounting for map bounds and offset
     // mapX/mapY are normalized coordinates (0.0-1.0) relative to the map's intrinsic size
@@ -56,19 +60,22 @@ fun BoxScope.CapitalMarker(
     val fontSize = if (capital.isNortheast) 8.sp else 10.sp
     val halfMarker = markerSize / 2
 
+    val showTooltip = isHovered || isSelected
+
     with(density) {
         Box(
             modifier = modifier
                 .offset(x = xPx.toDp() - halfMarker, y = yPx.toDp() - halfMarker)
-                .zIndex(if (isHovered) 100f else 1f)
-                .hoverable(interactionSource = interactionSource),
+                .zIndex(if (showTooltip) 100f else 1f)
+                .hoverable(interactionSource = interactionSource)
+                .clickable { isSelected = !isSelected },
             contentAlignment = Alignment.Center
         ) {
             // Temperature marker circle
             Box(
                 modifier = Modifier
                     .size(markerSize)
-                    .shadow(if (isHovered) 8.dp else 2.dp, CircleShape)
+                    .shadow(if (showTooltip) 8.dp else 2.dp, CircleShape)
                     .clip(CircleShape)
                     .background(
                         when {
@@ -79,8 +86,8 @@ fun BoxScope.CapitalMarker(
                         }
                     )
                     .border(
-                        width = if (isHovered) 2.dp else 1.dp,
-                        color = if (isHovered) Color.White else Color.White.copy(alpha = 0.8f),
+                        width = if (showTooltip) 2.dp else 1.dp,
+                        color = if (showTooltip) Color.White else Color.White.copy(alpha = 0.8f),
                         shape = CircleShape
                     ),
                 contentAlignment = Alignment.Center
@@ -97,8 +104,8 @@ fun BoxScope.CapitalMarker(
                 }
             }
 
-            // Tooltip on hover
-            if (isHovered && weather != null) {
+            // Tooltip on hover or click
+            if (showTooltip && weather != null) {
                 Surface(
                     modifier = Modifier
                         .offset(y = -(markerSize + 8.dp))
