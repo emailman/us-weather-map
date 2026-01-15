@@ -53,8 +53,19 @@ NOT `kotlinx.datetime.Clock` or `kotlinx.datetime.Instant`.
 7. **Jan 11, 2026**: Fixed state capital marker positions to align with Albers USA projection
 8. **Jan 12, 2026**: Recalculated all marker positions using proper Albers USA projection formula
 9. **Jan 14, 2026**: Fixed Refresh button, timestamp display, and JVM window size
+10. **Jan 15, 2026**: Added click-to-toggle tooltips for touch device support
 
 ## Completed Work
+
+### Click-to-Toggle Tooltips (Jan 15, 2026)
+- **Status**: Complete
+- **What was done**: Added click/tap support for marker tooltips
+- **Behavior**:
+  - Hover still shows tooltip (desktop)
+  - Click/tap pins tooltip open
+  - Click/tap again to close
+- **Files modified**:
+  - `CapitalMarker.kt`: Added `isSelected` state and `clickable` modifier
 
 ### Bug Fixes and UI Improvements (Jan 14, 2026)
 - **Status**: Complete
