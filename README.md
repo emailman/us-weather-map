@@ -7,7 +7,7 @@ A Kotlin Multiplatform weather application that displays current temperatures fo
 - Interactive US map with all 50 states
 - Real-time weather data for state capitals via OpenWeather API
 - Temperature-based color coding (blue for cold, red for hot)
-- Hover tooltips showing city name, state, and weather details
+- Tooltips showing city name, state, and weather details (hover or click/tap to toggle)
 - Responsive design with smaller markers for crowded Northeast region
 
 ## Tech Stack
