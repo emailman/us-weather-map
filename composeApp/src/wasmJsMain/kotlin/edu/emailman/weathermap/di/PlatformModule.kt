@@ -12,6 +12,7 @@ actual fun createHttpClient(): HttpClient = HttpClient(Js) {
     }
 }
 
+@OptIn(ExperimentalWasmJsInterop::class)
 @JsFun("() => window.OPENWEATHER_API_KEY || ''")
 private external fun getApiKeyFromWindow(): String
 
