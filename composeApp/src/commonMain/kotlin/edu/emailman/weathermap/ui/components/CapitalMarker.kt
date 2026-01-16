@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -66,6 +67,7 @@ fun BoxScope.CapitalMarker(
         Box(
             modifier = modifier
                 .offset(x = xPx.toDp() - halfMarker, y = yPx.toDp() - halfMarker)
+                .size(markerSize)
                 .zIndex(if (showTooltip) 100f else 1f)
                 .hoverable(interactionSource = interactionSource)
                 .clickable { isSelected = !isSelected },
@@ -108,7 +110,8 @@ fun BoxScope.CapitalMarker(
             if (showTooltip && weather != null) {
                 Surface(
                     modifier = Modifier
-                        .offset(y = -(markerSize + 8.dp))
+                        .wrapContentSize(unbounded = true)
+                        .offset(y = -(halfMarker + 50.dp))
                         .shadow(4.dp, RoundedCornerShape(6.dp)),
                     shape = RoundedCornerShape(6.dp),
                     color = Color(0xFF2D3748),

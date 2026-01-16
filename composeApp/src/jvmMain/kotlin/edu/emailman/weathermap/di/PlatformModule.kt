@@ -13,4 +13,4 @@ actual fun createHttpClient(): HttpClient = HttpClient(Java) {
 }
 
 actual fun getApiKey(): String = System.getenv("OPENWEATHER_API_KEY")
-    ?: error("OPENWEATHER_API_KEY environment variable not set")
+    ?: "f282e6810344a266faf4e7311d63359d" // Fallback for local development

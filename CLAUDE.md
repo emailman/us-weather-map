@@ -54,8 +54,19 @@ NOT `kotlinx.datetime.Clock` or `kotlinx.datetime.Instant`.
 8. **Jan 12, 2026**: Recalculated all marker positions using proper Albers USA projection formula
 9. **Jan 14, 2026**: Fixed Refresh button, timestamp display, and JVM window size
 10. **Jan 15, 2026**: Added click-to-toggle tooltips for touch device support
+11. **Jan 16, 2026**: Fixed JVM API key fallback and tooltip positioning/clipping issues
 
 ## Completed Work
+
+### Tooltip and JVM Fixes (Jan 16, 2026)
+- **Status**: Complete
+- **What was done**:
+  1. **JVM API Key Fallback**: Added fallback API key for local development in `PlatformModule.kt` (JVM version was showing "Failed to load data" without environment variable)
+  2. **Tooltip Positioning**: Fixed tooltip appearing over the marker circle by adding fixed size to outer Box and proper offset calculation
+  3. **Tooltip Clipping**: Fixed tooltip being clipped to marker size by adding `wrapContentSize(unbounded = true)`
+- **Files modified**:
+  - `PlatformModule.kt` (jvmMain): Added fallback API key for development
+  - `CapitalMarker.kt`: Added `.size(markerSize)` to outer Box, `wrapContentSize(unbounded = true)` to tooltip Surface, adjusted offset to `-(halfMarker + 50.dp)`
 
 ### Click-to-Toggle Tooltips (Jan 15, 2026)
 - **Status**: Complete
@@ -106,7 +117,7 @@ NOT `kotlinx.datetime.Clock` or `kotlinx.datetime.Instant`.
   - Optimized paths for web rendering
 
 ### Environment Setup
-- **Required**: `OPENWEATHER_API_KEY` environment variable for JVM Desktop version
+- **Optional**: `OPENWEATHER_API_KEY` environment variable for JVM Desktop version (falls back to development API key if not set)
 - **WasmJS/JS versions**: Run at http://localhost:8080
 - The WasmJS build was successfully compiled and served
 
